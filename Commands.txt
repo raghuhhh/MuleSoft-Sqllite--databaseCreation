@@ -1,0 +1,157 @@
+Using sqlite without eclipse:-
+cd C:\Users\Desktop\db
+sqlite3 moviesdb.db
+.databases
+create table Movies(ID INT PRIMARY KEY NOT NULL,
+   MNAME TEXT NOT NULL,
+   Actor TEXT NOT NULL,
+   Actress TEXT NOT NULL,
+   Year INT NOT NULL,
+   DName TEXT NOT NULL);
+insert into Movies values(1,'A','Arjun','Amala',2000,'Koratala');
+ select * from Movies;
+1 A Arjun Amala 2000 Koratala
+
+
+
+JavaFiles  :
+Project 1
+JAVASE-1.8
+Package:-net.cjava
+
+movies.java
+package net.cjava;
+
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+public class Movies1 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+String jdbcUrl="jdbc:sqlite:/C:\\Users\\Desktop\\db\\moviesdb.db";
+
+try {
+	Connection connection=DriverManager.getConnection(jdbcUrl);
+String sql="SELECT * FROM Movies;";
+java.sql.Statement statement=connection.createStatement();
+ResultSet result= statement.executeQuery(sql);
+while(result.next()) {
+	String name=result.getString("MNAME");
+	int sno=result.getInt("ID");
+	String actor=result.getString("Actor");
+	String actress=result.getString("Actress");
+	int year=result.getInt("Year");
+	String dname=result.getString("DNAME");
+	System.out.print(sno+" "+ name+" "+actor+" "+actress+" "+year+" "+dname);
+System.out.println();
+}
+}
+catch(SQLException e){
+	System.out.println("Error connecting to sqllite db");
+	e.printStackTrace();
+}
+
+	}
+}
+
+C:\Users\Desktop\db
+
+C:\Users\Desktop\db>sqlite3 moviesdb.db
+SQLite version 3.39.0 2022-06-25 14:57:57
+Enter ".help" for usage hints.
+sqlite> select * from movies;
+1 A Arjun Teja Taapsee 2012 Siva
+2 Racha Ram Charan Tamannaah 2012 Sampath Nandi
+
+
+sqllite with maven:-
+POM.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.cjava</groupId>
+  <artifactId>SQLiteExample</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+<dependencies>
+<dependency>
+  <groupId>org.xerial</groupId>
+  <artifactId>sqlite-jdbc</artifactId>
+  <version>3.36.0.3</version>
+</dependency>
+</dependencies>
+</project>
+
+Movies.java:-
+package netcode.java;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Movies {
+public static void main(String a[]) {
+try {
+	//create Movies database
+	String 	jdbcUrl="jdbc:sqlite:Movies.db";
+	Connection connection;
+	connection = DriverManager.getConnection(jdbcUrl);
+//Create table
+	/*String sql="create table Movies(ID INT PRIMARY KEY NOT NULL,MNAME TEXT NOT NULL,Actor TEXT NOT NULL,Actress TEXT NOT NULL,Year INT NOT NULL,DName TEXT NOT NULL);";
+	java.sql.Statement statement=connection.createStatement();
+	statement.executeUpdate(sql);
+	System.out.println("Table Created");
+	*/
+	
+	//inserting 1st row
+	/*String sql="insert into Movies values(1 A Arjun Amala 2000 Koratala);";
+java.sql.Statement statement=connection.createStatement();
+int rows=statement.executeUpdate(sql);
+*/
+//	inserting 2nd row
+/*
+String sql1="insert into Movies values(2 B NTR Hegde 2001 raghu);";
+java.sql.Statement statement=connection.createStatement();
+int rows=statement.executeUpdate(sql1);
+*/
+	
+String sql="select * from Movies;";
+	java.sql.Statement statement=connection.createStatement();
+	ResultSet result= statement.executeQuery(sql);
+	while(result.next()) {
+		String name=result.getString("MNAME");
+		int sno=result.getInt("ID");
+		String actor=result.getString("Actor");
+		String actress=result.getString("Actress");
+		int year=result.getInt("Year");
+		String dname=result.getString("DNAME");
+		System.out.print(sno+" "+ name+" "+actor+" "+actress+" "+year+" "+dname);
+	System.out.println();
+	}
+} catch (SQLException e) {
+	// TODO Auto-generated catch block
+	System.out.println("Error connecting to sqllite db");
+	e.printStackTrace();
+}
+
+}
+}
+
+
+C:\Users\Desktop\db\SQLiteExample>sqlite3 Movies.db
+SQLite version 3.39.0 2022-06-25 14:57:57
+Enter ".help" for usage hints.
+sqlite> select * from Movies;
+
+1 A Arjun Amala 2000 Koratala
+2 B NTR Hegde 2001 raghu
+
+Java Files:-
+1.movies.java(SQLiteExample):-C:\Users\Desktop\db\SQLiteExample\src\main\java\netcode\java
+2.movies1.java(Movies1):-C:\Users\Desktop\db\Movies1\src\net\cjava
+
+Data Base:-
+1.moviesdb(Movies1):-C:\Users\Desktop\db
+2.Movies(SQLieExample):-C:\Users\\Desktop\db\SQLiteExample
